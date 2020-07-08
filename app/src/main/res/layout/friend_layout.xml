@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="8dp"
+    android:elevation="4dp"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    app:cardCornerRadius="7dp">
+    <LinearLayout
+        android:layout_margin="10dp"
+        xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:orientation="horizontal">
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_marginStart="5dp"
+                android:id="@+id/friend_photo"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_gravity="center_vertical|start"
+                android:src="@drawable/ic_launcher_background" />
+        <TextView
+            android:id="@+id/friend_handle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Handle"
+            android:layout_marginStart="20dp"
+            android:gravity="center_vertical"
+            android:textSize="15sp"
+            android:layout_weight="33"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="33"
+            android:weightSum="100">
+            <TextView
+                android:background="@color/colorPrimary"
+                android:textColor="#ffffff"
+                android:id="@+id/friend_rating"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Rating"
+                android:gravity="center"
+                android:textSize="15sp"
+                android:layout_weight="50"/>
+            <TextView
+                android:textColor="#ffffff"
+                android:background="@color/colorPrimary"
+                android:id="@+id/friend_rank"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="rank"
+                android:layout_weight="50"
+                android:gravity="center"
+                android:textSize="15sp"/>
+        </LinearLayout>
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

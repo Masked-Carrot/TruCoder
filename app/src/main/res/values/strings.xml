@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Tru Coder</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="recent_participations">Recent participations</string>
+    <string name="rank">Rank</string>
+    <string name="rating">Rating</string>
+    <string name="hello">Hello</string>
+</resources>
