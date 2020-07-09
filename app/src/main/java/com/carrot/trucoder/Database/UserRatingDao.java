@@ -13,7 +13,7 @@ import java.util.List;
 @Dao
 public interface UserRatingDao {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     void InsertRating(List<UserRatingList> userRatingLists);
 
     @Query("DELETE FROM USER_RATING_TABLE")

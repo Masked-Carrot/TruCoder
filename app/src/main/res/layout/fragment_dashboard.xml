@@ -6,34 +6,44 @@
     android:layout_height="match_parent"
     tools:context=".MainAcitivityFragment.DashboardFragment">
 
-    <EditText
-        android:id="@+id/search_f"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="20"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:hint="enter user here"
-        app:layout_constraintEnd_toEndOf="parent"/>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_marginTop="50dp"
-        android:id="@+id/friendRecycle"
+    <LinearLayout
+        android:layout_margin="10dp"
+        android:id="@+id/frame"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:orientation="vertical">
+        <EditText
+            android:id="@+id/frag_frnd_search_et"
+            android:layout_marginBottom="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/edittextback1"
+            android:hint="Codeforces handle"
+            android:textAlignment="center"/>
+        <br.com.simplepass.loadingbutton.customViews.CircularProgressButton
+            android:id="@+id/frag_frnd_search_btn"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:backgroundTint="@color/colorPrimary"
+            android:textColor="#ffffff"
+            android:layout_gravity="center"
+            app:spinning_bar_color="#ffffff"
+            android:text="Search"/>
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_marginTop="50dp"
+            android:id="@+id/frag_frnd_recycleview"
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/add_friend"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="70dp"
-        android:src="@android:drawable/ic_menu_add"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/frame" />
+    </LinearLayout>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
+

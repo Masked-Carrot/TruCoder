@@ -14,14 +14,14 @@ import java.util.List;
 @Dao
 public interface FriendsDao {
 
-    @Insert
-    void AddFriend(FriendList friendList);
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    void AddFriend(List<FriendList> friendLists);
 
     @Delete
     void KillFriend(FriendList friendList);
 
-    @Insert()
-    void InsertBatchFriend(List<FriendList> friendLists);
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    void Insert1Friend(FriendList friendList);
 
     @Query("DELETE FROM FRIEND_LIST")
     void NukeFriend();

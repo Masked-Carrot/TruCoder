@@ -3,6 +3,8 @@ package com.carrot.trucoder.Collection;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import com.google.gson.annotations.SerializedName;
+
 @Entity(tableName = "Friend_List")
 public class FriendList {
 
@@ -13,6 +15,14 @@ public class FriendList {
     @PrimaryKey(autoGenerate =  true)
     private int id;
 
+    private String handle;
+
+
+    private String rank;
+    private String rating;
+    @SerializedName("titlePhoto")
+    private String profile;
+
     public int getId() {
         return id;
     }
@@ -21,17 +31,13 @@ public class FriendList {
         this.id = id;
     }
 
-    private String handle;
-    public String getHandle() {
-        return handle;
-    }
-
-    private String rank;
-    private String rating;
-    private String profile;
 
     public String getProfile() {
         return profile;
+    }
+
+    public String getHandle() {
+        return handle;
     }
 
     public void setProfile(String profile) {

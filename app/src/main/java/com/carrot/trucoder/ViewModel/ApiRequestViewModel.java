@@ -11,31 +11,20 @@ public class ApiRequestViewModel extends ViewModel {
     public void getInfo(String handle , Application application){
         if(codeAPIRepository == null)
             codeAPIRepository = CodeAPIRepository.getInstance(application);
-        codeAPIRepository.getUserInfo(handle);
+        codeAPIRepository.FetchUserInfo(handle);
     }
 
     public void getRating(String handle , Application application){
         if(codeAPIRepository == null)
             codeAPIRepository = CodeAPIRepository.getInstance(application);
-        codeAPIRepository.getUserRating(handle);
+        codeAPIRepository.FetchUserRating(handle);
     }
 
     public void  getNewFriend(String handle , Application application){
         if(codeAPIRepository == null)
             codeAPIRepository = CodeAPIRepository.getInstance(application);
-        codeAPIRepository.getNewFriendInfo(handle);
+        codeAPIRepository.FetchFriendInfo(handle);
     }
 
-    public void getContest(Application application){
-        if(codeAPIRepository == null)
-            codeAPIRepository = CodeAPIRepository.getInstance(application);
-        codeAPIRepository.getContestInfo();
-    }
-
-    public void getListofFriends(String handle ,Application application){
-        if(codeAPIRepository == null)
-            codeAPIRepository = CodeAPIRepository.getInstance(application);
-        codeAPIRepository.getAllFriendInfo(handle);
-    }
 
 }

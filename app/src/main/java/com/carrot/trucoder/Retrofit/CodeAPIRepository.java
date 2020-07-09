@@ -5,22 +5,17 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 
-import com.carrot.trucoder.Collection.ContestList;
-import com.carrot.trucoder.Collection.ContestListResponse;
 import com.carrot.trucoder.Collection.FriendList;
+import com.carrot.trucoder.Collection.FriendResponse;
 import com.carrot.trucoder.Collection.UserInfoList;
 import com.carrot.trucoder.Collection.UserInfoResposne;
-
 import com.carrot.trucoder.Collection.UserRatingList;
 import com.carrot.trucoder.Collection.UserRatingResponse;
 import com.carrot.trucoder.Database.CodeDatabase;
-import com.carrot.trucoder.Database.ContestListDao;
 import com.carrot.trucoder.Database.FriendsDao;
 import com.carrot.trucoder.Database.UserInfoDao;
 import com.carrot.trucoder.Database.UserRatingDao;
-import com.carrot.trucoder.FriendResponse;
 
 
 import java.util.List;
@@ -32,28 +27,25 @@ import retrofit2.Response;
 public class CodeAPIRepository {
     private static final String TAG = "Repository";
     private static CodeAPIRepository instance;
+    private static LiveData<List<FriendList>> friendlist;
     private LiveData<List<UserRatingList>> ratingListLiveData;
-    private LiveData<List<FriendList>> allFriends;
     private LiveData<UserInfoList> infoListLiveData;
-    private FriendsDao friendsDao;
     private  UserInfoDao userInfoDao;
+    private FriendsDao friendsDao;
     private  UserRatingDao userRatingDao;
     private CodeApi codeApi;
-    private ContestListDao contestListDao;
 
 
     public CodeAPIRepository(Application application){
         codeApi = RetrofitService.cteateService(CodeApi.class);
         CodeDatabase database = CodeDatabase.getInstance(application);
-        friendsDao = database.friendsDao();
         userInfoDao = database.userInfoDao();
         userRatingDao = database.userRatingDao();
         ratingListLiveData = userRatingDao.getAllRating();
         infoListLiveData = userInfoDao.getAllInfo();
-        allFriends = friendsDao.getAllFriends();
-        contestListDao = database.contestListDao();
+        friendsDao = database.friendsDao();
+        friendlist = friendsDao.getAllFriends();
     }
-
 
     public static CodeAPIRepository getInstance(Application application){
         if(instance != null)
@@ -62,25 +54,8 @@ public class CodeAPIRepository {
         return instance;
     }
 
-    public void getContestInfo(){
-        codeApi.getAllConstest(false).enqueue(new Callback<ContestListResponse>() {
-            @Override
-            public void onResponse(Call<ContestListResponse> call, Response<ContestListResponse> response) {
-                if(response.isSuccessful()){
-                    new NukeContestList(contestListDao).execute();
-                    new InsertContestList(contestListDao).execute(response.body().getList());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ContestListResponse> call, Throwable t) {
-
-            }
-        });
-    }
-
-    public void getUserInfo(String handle){
-        codeApi.getUserInfo(handle).enqueue(new Callback<UserInfoResposne>() {
+    public void FetchUserInfo(String handle){
+        codeApi.FetchUserInfo(handle).enqueue(new Callback<UserInfoResposne>() {
             @Override
             public void onResponse(Call<UserInfoResposne> call, Response<UserInfoResposne> response) {
                 if (response.isSuccessful()){
@@ -99,8 +74,8 @@ public class CodeAPIRepository {
 
     }
 
-    public void getUserRating(String handle){
-        codeApi.getUserRating(handle).enqueue(new Callback<UserRatingResponse>() {
+    public void FetchUserRating(String handle){
+        codeApi.FetchUserRating(handle).enqueue(new Callback<UserRatingResponse>() {
             @Override
             public void onResponse(Call<UserRatingResponse> call, Response<UserRatingResponse> response) {
                 if(response.isSuccessful() && response.body().getRatingList() != null){
@@ -118,30 +93,14 @@ public class CodeAPIRepository {
         });
     }
 
-    public void getNewFriendInfo(String handle){
-        codeApi.getUserInfo(handle).enqueue(new Callback<UserInfoResposne>() {
-            @Override
-            public void onResponse(Call<UserInfoResposne> call, Response<UserInfoResposne> response) {
-                FriendList friendList = new FriendList(response.body().getList().get(0).getHandle());
-                friendList.setRank(response.body().getList().get(0).getRank());
-                friendList.setRating(response.body().getList().get(0).getRating());
-                friendList.setProfile("http://".concat(response.body().getList().get(0).getUrltoImage().substring(2)));
-                new AddFriendBack(friendsDao).execute(friendList);
-            }
-
-            @Override
-            public void onFailure(Call<UserInfoResposne> call, Throwable t) {
-                Log.d(TAG , "response failed userfriendinfo");
-            }
-        });
-    }
-
-    public void getAllFriendInfo(String handle){
-        codeApi.getFriendInfo(handle).enqueue(new Callback<FriendResponse>() {
+    public void FetchFriendInfo(String handles){
+        codeApi.fetchFriendInfo(handles).enqueue(new Callback<FriendResponse>() {
             @Override
             public void onResponse(Call<FriendResponse> call, Response<FriendResponse> response) {
                 if(response.isSuccessful()){
-                    new updateFriendsList(friendsDao).execute(response.body().getList());
+                    String pic = response.body().getList().get(0).getProfile();
+                    response.body().getList().get(0).setProfile("http:".concat(pic));
+                    new InsertFriendBack(friendsDao).execute(response.body().getList().get(0));
                 }
             }
 
@@ -150,6 +109,49 @@ public class CodeAPIRepository {
 
             }
         });
+    }
+
+    public void UpdateFriendInfo(String handles){
+        codeApi.fetchFriendInfo(handles).enqueue(new Callback<FriendResponse>() {
+            @Override
+            public void onResponse(Call<FriendResponse> call, Response<FriendResponse> response) {
+                if(response.isSuccessful()){
+                    new InsertBatchFriendBack(friendsDao).execute(response.body().getList());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<FriendResponse> call, Throwable t) {
+
+            }
+        });
+    }
+
+
+    private static class InsertFriendBack extends AsyncTask<FriendList , Void ,Void>{
+        private FriendsDao friendsDao;
+        public InsertFriendBack(FriendsDao friendsDao){
+            this.friendsDao = friendsDao;
+        }
+
+        @Override
+        protected Void doInBackground(FriendList...lists) {
+            friendsDao.Insert1Friend(lists[0]);
+            return null;
+        }
+    }
+
+    private static class InsertBatchFriendBack extends AsyncTask<List<FriendList> , Void ,Void>{
+        private FriendsDao friendsDao;
+        public InsertBatchFriendBack(FriendsDao friendsDao){
+            this.friendsDao = friendsDao;
+        }
+
+        @Override
+        protected Void doInBackground(List<FriendList>... lists) {
+            friendsDao.AddFriend(lists[0]);
+            return null;
+        }
     }
 
     private static class InsertRatingBack extends AsyncTask<List<UserRatingList> ,Void , Void> {
@@ -204,58 +206,18 @@ public class CodeAPIRepository {
         }
     }
 
-    private static class AddFriendBack extends  AsyncTask<FriendList , Void ,Void >{
-        private FriendsDao friendsDao;
-        public AddFriendBack(FriendsDao friendsDao){
-            this.friendsDao = friendsDao;
-        }
 
-        @Override
-        protected Void doInBackground(FriendList... friendLists) {
-            friendsDao.AddFriend(friendLists[0]);
-            return null;
-        }
+
+
+    public LiveData<List<UserRatingList>> getRatingListLiveData() {
+        return ratingListLiveData;
     }
 
-    private static class InsertContestList extends AsyncTask<List<ContestList> , Void , Void>{
-        private ContestListDao contestListDao;
-        public InsertContestList(ContestListDao contestListDao){
-            this.contestListDao = contestListDao;
-        }
-
-        @Override
-        protected Void doInBackground(List<ContestList>... lists) {
-            contestListDao.InsertContest(lists[0]);
-            return null;
-        }
+    public LiveData<UserInfoList> getInfoListLiveData() {
+        return infoListLiveData;
     }
 
-    private static class NukeContestList extends AsyncTask<Void , Void , Void>{
-        private ContestListDao contestListDao;
-        public NukeContestList(ContestListDao contestListDao){
-            this.contestListDao = contestListDao;
-        }
-
-        @Override
-        protected Void doInBackground(Void...voids) {
-            contestListDao.DeleteContesetTable();
-            return null;
-        }
+    public LiveData<List<FriendList>> getFriendList(){
+        return friendlist;
     }
-
-    private static class updateFriendsList extends AsyncTask<List<FriendList> , Void ,Void>{
-        private FriendsDao friendsDao;
-        public updateFriendsList(FriendsDao friendsDao){
-            this.friendsDao = friendsDao;
-        }
-
-        @Override
-        protected Void doInBackground(List<FriendList>... lists) {
-            friendsDao.NukeFriend();
-            friendsDao.InsertBatchFriend(lists[0]);
-            return null;
-        }
-    }
-
-
 }

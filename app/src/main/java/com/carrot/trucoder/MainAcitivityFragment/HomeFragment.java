@@ -79,7 +79,8 @@ public class HomeFragment extends Fragment {
         layout = root.findViewById(R.id.home_frag_layout);
         ratingtv =  root.findViewById(R.id.rating);
         ranktv = root.findViewById(R.id.rating_text);
-        color_Rating = root.findViewById(R.id.rating_colored_home);
+        color_Rating = root.findViewById(R.id.profile_pic_bound);
+        color_Rating.setImageResource(R.color.colorPrimary);
 
         profilepic = root.findViewById(R.id.profile_pic);
         name = root.findViewById(R.id.name_home);
@@ -110,6 +111,7 @@ public class HomeFragment extends Fragment {
                 setTextView(userInfoList);
                 layout.setVisibility(View.VISIBLE);
                 lottieAnimationView.setVisibility(View.INVISIBLE);
+                setRatingImage(Integer.parseInt(userInfoList.getRating()));
                 if(flag == 2) {
                     layout.setVisibility(View.VISIBLE);
                     lottieAnimationView.setVisibility(View.INVISIBLE);
@@ -177,7 +179,22 @@ public class HomeFragment extends Fragment {
         Chart.setLineChartData(data);
     }
 
-    private void setRatingImage(int rating){
-
+    private void setRatingImage(int rating) {
+            if(rating < 1200)
+                color_Rating.setImageResource(R.color.newbie);
+            else if(rating < 1400)
+                color_Rating.setImageResource(R.color.pupil);
+            else if(rating < 1600)
+                color_Rating.setImageResource(R.color.specilist);
+            else if(rating < 1900)
+                color_Rating.setImageResource(R.color.expert);
+            else if(rating < 2200)
+                color_Rating.setImageResource(R.color.CandidateMaster);
+            else if(rating < 2400)
+                color_Rating.setImageResource(R.color.InternationalMaster);
+            else if(rating < 2900)
+                color_Rating.setImageResource(R.color.InternationalGrandmaster);
+            else
+                color_Rating.setImageResource(R.color.LegendaryGrandmaster);
     }
 }

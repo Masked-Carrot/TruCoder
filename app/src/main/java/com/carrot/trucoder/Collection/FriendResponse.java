@@ -1,4 +1,4 @@
-package com.carrot.trucoder;
+package com.carrot.trucoder.Collection;
 
 import com.carrot.trucoder.Collection.FriendList;
 import com.carrot.trucoder.Collection.UserInfoList;

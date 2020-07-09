@@ -26,10 +26,8 @@ import retrofit2.Response;
 
 public class UserDeatails extends AppCompatActivity {
 
-    private EditText truusertv;
     private EditText codeforcestv;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private CollectionReference reference = db.collection("TRUUSER>codeforces>test01");
     private FirebaseDatabaseViewModel firebaseDatabaseViewModel;
     private SharedPreferences sharedPreferences;
 
@@ -58,7 +56,7 @@ public class UserDeatails extends AppCompatActivity {
                 else {
                     ApiRequestViewModel apiRequestViewModel = new ViewModelProvider(ViewModelStore::new).get(ApiRequestViewModel.class);
                     CodeApi codeApi = RetrofitService.cteateService(CodeApi.class);
-                    codeApi.getUserInfo(codeforcesusername).enqueue(new Callback<UserInfoResposne>() {
+                    codeApi.FetchUserInfo(codeforcesusername).enqueue(new Callback<UserInfoResposne>() {
                         @Override
                         public void onResponse(Call<UserInfoResposne> call, Response<UserInfoResposne> response) {
                             if(response.isSuccessful()){
