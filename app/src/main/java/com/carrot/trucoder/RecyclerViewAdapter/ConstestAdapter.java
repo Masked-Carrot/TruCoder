@@ -11,6 +11,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.carrot.trucoder.Collection.ContestList;
 import com.carrot.trucoder.R;
 
+import org.w3c.dom.Text;
+
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -30,7 +34,14 @@ public class ConstestAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         TextView id = holder.itemView.findViewById(R.id.contest_recycle_text);
+        TextView time = holder.itemView.findViewById(R.id.daysToGo);
+        int timeleft = contestLists.get(position).getStartTime();
         id.setText(contestLists.get(position).getName());
+        Instant instant = Instant.ofEpochSecond(timeleft);
+        long days = Instant.now().until(instant, ChronoUnit.DAYS);
+        time.setText(String.valueOf(days));
+
+
     }
 
     @Override
@@ -43,4 +54,7 @@ public class ConstestAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         this.contestLists = list;
         notifyDataSetChanged();
     }
+
+
+
 }

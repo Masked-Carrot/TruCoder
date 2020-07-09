@@ -1,5 +1,7 @@
 package com.carrot.trucoder.Retrofit;
 
+import com.carrot.trucoder.Collection.ContestList;
+import com.carrot.trucoder.Collection.ContestListResponse;
 import com.carrot.trucoder.Collection.FriendResponse;
 import com.carrot.trucoder.Collection.UserInfoResposne;
 import com.carrot.trucoder.Collection.UserRatingResponse;
@@ -17,5 +19,8 @@ public interface CodeApi {
 
     @GET("user.info")
     Call<FriendResponse> fetchFriendInfo(@Query("handles") String handles);
+
+    @GET("contest.list")
+    Call<ContestListResponse> fetchContest(@Query("gym") boolean gym);
 
 }

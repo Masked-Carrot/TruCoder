@@ -1,11 +1,16 @@
 package com.carrot.trucoder.Retrofit;
 
 import android.app.Application;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.LayoutInflater;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
+import com.carrot.trucoder.Collection.ContestList;
+import com.carrot.trucoder.Collection.ContestListResponse;
 import com.carrot.trucoder.Collection.FriendList;
 import com.carrot.trucoder.Collection.FriendResponse;
 import com.carrot.trucoder.Collection.UserInfoList;
@@ -13,6 +18,7 @@ import com.carrot.trucoder.Collection.UserInfoResposne;
 import com.carrot.trucoder.Collection.UserRatingList;
 import com.carrot.trucoder.Collection.UserRatingResponse;
 import com.carrot.trucoder.Database.CodeDatabase;
+import com.carrot.trucoder.Database.ContestListDao;
 import com.carrot.trucoder.Database.FriendsDao;
 import com.carrot.trucoder.Database.UserInfoDao;
 import com.carrot.trucoder.Database.UserRatingDao;
@@ -33,6 +39,8 @@ public class CodeAPIRepository {
     private  UserInfoDao userInfoDao;
     private FriendsDao friendsDao;
     private  UserRatingDao userRatingDao;
+    private ContestListDao contestListDao;
+    private MutableLiveData<List<ContestList>> contestList;
     private CodeApi codeApi;
 
 
@@ -44,7 +52,9 @@ public class CodeAPIRepository {
         ratingListLiveData = userRatingDao.getAllRating();
         infoListLiveData = userInfoDao.getAllInfo();
         friendsDao = database.friendsDao();
+        contestListDao = database.contestListDao();
         friendlist = friendsDao.getAllFriends();
+        contestList = new MutableLiveData<>();
     }
 
     public static CodeAPIRepository getInstance(Application application){
@@ -106,7 +116,6 @@ public class CodeAPIRepository {
 
             @Override
             public void onFailure(Call<FriendResponse> call, Throwable t) {
-
             }
         });
     }
@@ -127,8 +136,24 @@ public class CodeAPIRepository {
         });
     }
 
+    public LiveData<List<ContestList>> FetchContest(){
+        codeApi.fetchContest(false).enqueue(new Callback<ContestListResponse>() {
+            @Override
+            public void onResponse(Call<ContestListResponse> call, Response<ContestListResponse> response) {
+                if(response.isSuccessful())
+                    contestList.setValue(response.body().getList());
+            }
 
-    private static class InsertFriendBack extends AsyncTask<FriendList , Void ,Void>{
+            @Override
+            public void onFailure(Call<ContestListResponse> call, Throwable t) {
+
+            }
+        });
+        return contestList;
+    }
+
+
+    public static class InsertFriendBack extends AsyncTask<FriendList , Void ,Void>{
         private FriendsDao friendsDao;
         public InsertFriendBack(FriendsDao friendsDao){
             this.friendsDao = friendsDao;

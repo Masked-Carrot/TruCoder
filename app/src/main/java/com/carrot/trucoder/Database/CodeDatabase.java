@@ -11,7 +11,7 @@ import com.carrot.trucoder.Collection.FriendList;
 import com.carrot.trucoder.Collection.UserInfoList;
 import com.carrot.trucoder.Collection.UserRatingList;
 
-@Database(entities = {FriendList.class , UserInfoList.class , UserRatingList.class , ContestList.class} , version = 1)
+@Database(entities = {FriendList.class , UserInfoList.class , UserRatingList.class , ContestList.class} , version = 3)
 public abstract class CodeDatabase extends RoomDatabase {
 
     private static CodeDatabase instance;

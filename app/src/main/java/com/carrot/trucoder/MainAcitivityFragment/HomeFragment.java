@@ -111,7 +111,8 @@ public class HomeFragment extends Fragment {
                 setTextView(userInfoList);
                 layout.setVisibility(View.VISIBLE);
                 lottieAnimationView.setVisibility(View.INVISIBLE);
-                setRatingImage(Integer.parseInt(userInfoList.getRating()));
+                if(userInfoList != null)
+                    setRatingImage(Integer.parseInt(userInfoList.getRating()));
                 if(flag == 2) {
                     layout.setVisibility(View.VISIBLE);
                     lottieAnimationView.setVisibility(View.INVISIBLE);

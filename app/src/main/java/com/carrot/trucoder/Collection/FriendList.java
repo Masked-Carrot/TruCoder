@@ -1,5 +1,6 @@
 package com.carrot.trucoder.Collection;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -12,9 +13,9 @@ public class FriendList {
         this.handle = handle;
     }
 
-    @PrimaryKey(autoGenerate =  true)
-    private int id;
 
+    @NonNull
+    @PrimaryKey()
     private String handle;
 
 
@@ -22,14 +23,6 @@ public class FriendList {
     private String rating;
     @SerializedName("titlePhoto")
     private String profile;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
 
     public String getProfile() {

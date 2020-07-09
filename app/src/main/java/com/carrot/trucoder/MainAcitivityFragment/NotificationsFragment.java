@@ -15,13 +15,16 @@ import androidx.lifecycle.ViewModelStore;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.carrot.trucoder.Collection.ContestList;
 import com.carrot.trucoder.R;
 import com.carrot.trucoder.RecyclerViewAdapter.ConstestAdapter;
 import com.carrot.trucoder.ViewModel.ApiRequestViewModel;
 import com.carrot.trucoder.ViewModel.DatabaseViewModel;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class NotificationsFragment extends Fragment {
 
@@ -29,6 +32,7 @@ public class NotificationsFragment extends Fragment {
     private RecyclerView recyclerView;
     private DatabaseViewModel databaseViewModel;
     private ApiRequestViewModel apiRequestViewModel;
+    private LottieAnimationView animationView;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -40,9 +44,26 @@ public class NotificationsFragment extends Fragment {
         recyclerView.setAdapter(constestAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext() , LinearLayoutManager.VERTICAL , false));
 
-
+        animationView = root.findViewById(R.id.loading_anim_contest);
         apiRequestViewModel = new ViewModelProvider(ViewModelStore::new).get(ApiRequestViewModel.class);
         databaseViewModel = new ViewModelProvider(this,  new ViewModelProvider.AndroidViewModelFactory(requireActivity().getApplication())).get(DatabaseViewModel.class);
+        apiRequestViewModel.getContestList(requireActivity().getApplication()).observe(getViewLifecycleOwner(), new Observer<List<ContestList>>() {
+            @Override
+            public void onChanged(List<ContestList> temp) {
+                if(temp != null){
+                    List<ContestList> contestLists = new ArrayList<>();
+                    for(int i= 0;i<temp.size();i++){
+                        if(temp.get(i).getPhase().equals("BEFORE"))
+                            contestLists.add(temp.get(i));
+                        else
+                            break;
+
+                    }
+                    animationView.setVisibility(View.INVISIBLE);
+                    constestAdapter.setList(contestLists);
+                }
+            }
+        });
         return root;
     }
 }

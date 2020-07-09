@@ -6,6 +6,19 @@
     android:layout_height="match_parent"
     tools:context=".MainAcitivityFragment.NotificationsFragment">
 
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/loading_anim_contest"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:lottie_fileName="data.json"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/contest_recycle"
         android:layout_width="match_parent"
