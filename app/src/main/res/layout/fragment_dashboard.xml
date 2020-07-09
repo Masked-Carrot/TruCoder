@@ -49,7 +49,7 @@
                     android:backgroundTint="@color/colorPrimary"
                     android:textColor="#ffffff"
                     android:layout_gravity="center"
-                    app:spinning_bar_color="@color/colorPrimary"
+                    app:spinning_bar_color="#ffffff"
                     android:text="Search"/>
             </LinearLayout>
 
@@ -71,7 +71,7 @@
 
             android:id="@+id/frag_frnd_recycleview"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
 

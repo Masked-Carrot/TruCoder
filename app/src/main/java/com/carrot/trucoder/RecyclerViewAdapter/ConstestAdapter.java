@@ -56,5 +56,25 @@ public class ConstestAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
 
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
+        TextView timestamp, title;
+        OnNoteListener mOnNoteListener;
+
+        public ViewHolder(View itemView, OnNoteListener onNoteListener) {
+            super(itemView);
+            mOnNoteListener = onNoteListener;
+
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            mOnNoteListener.onNoteClick(getAdapterPosition());
+        }
+    }
+
+    public interface OnNoteListener{
+        void onNoteClick(int position);
+    }
 }

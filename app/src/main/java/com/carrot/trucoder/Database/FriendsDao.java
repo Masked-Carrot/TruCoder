@@ -26,6 +26,6 @@ public interface FriendsDao {
     @Query("DELETE FROM FRIEND_LIST")
     void NukeFriend();
 
-    @Query("SELECT * FROM FRIEND_LIST")
+    @Query("SELECT * FROM FRIEND_LIST ORDER BY rating DESC")
     LiveData<List<FriendList>> getAllFriends();
 }

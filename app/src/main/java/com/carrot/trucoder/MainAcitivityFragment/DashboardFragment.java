@@ -92,12 +92,14 @@ public class DashboardFragment extends Fragment {
                                 new CodeAPIRepository.InsertFriendBack(friendsDao).execute(response.body().getList().get(0));
                                 searchfriend_btn.stopAnimation();
                                 searchfriend_btn.revertAnimation();
+                                searchfriend_et.setText("");
 
                             }
                             else{
                                 Toast.makeText(getContext(), "No user with handle" +handle, Toast.LENGTH_SHORT).show();
                                 searchfriend_btn.stopAnimation();
                                 searchfriend_btn.revertAnimation();
+                                searchfriend_et.setText("");
                             }
                         }
 
@@ -106,6 +108,7 @@ public class DashboardFragment extends Fragment {
                             Toast.makeText(getContext(), "Please check you internet connection", Toast.LENGTH_SHORT).show();
                             searchfriend_btn.stopAnimation();
                             searchfriend_btn.revertAnimation();
+                            searchfriend_et.setText("");
                         }
                     });
 
